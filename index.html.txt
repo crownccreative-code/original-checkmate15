@@ -1,0 +1,245 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  ChevronDown, 
+  Instagram, 
+  Twitter, 
+  Facebook,
+  ShoppingBag, 
+  Zap
+} from 'lucide-react';
+
+// --- INITIAL PRODUCT DATA ---
+const PRODUCTS = [
+  { id: 1, name: "APOCALYPSE HOODIE", price: 120, category: "Outerwear", image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=800" },
+  { id: 2, name: "ROOK CARGO PANTS", price: 145, category: "Bottoms", image: "https://images.unsplash.com/photo-1624282159512-f21b038ff447?auto=format&fit=crop&q=80&w=800" },
+  { id: 3, name: "KNIGHT TEE - ASH", price: 65, category: "Tees", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800" },
+  { id: 4, name: "GRANDMASTER BEANIE", price: 45, category: "Accessories", image: "https://images.unsplash.com/photo-1576871337622-98d48d43c95c?auto=format&fit=crop&q=80&w=800" },
+];
+
+export default function App() {
+  const [scrollY, setScrollY] = useState(0);
+
+  // Tracking scroll for cinematic transitions
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Visual calculations for the banner
+  const heroOpacity = Math.max(0, 1 - scrollY / 700);
+  const logoScale = Math.max(0.75, 1 - scrollY / 2500);
+
+  return (
+    <div className="min-h-screen bg-black text-white font-sans selection:bg-red-600 overflow-x-hidden">
+      
+      {/* Google Font for the Logo Script */}
+      <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet" />
+
+      {/* --- TOP NAVIGATION --- */}
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 px-6 py-4 flex justify-between items-center ${scrollY > 100 ? 'bg-black/95 backdrop-blur-md border-b border-white/10' : 'bg-transparent'}`}>
+        
+        {/* LOGO: RED & WHITE STYLE */}
+        <div className="flex flex-col items-center leading-none scale-90 md:scale-100 origin-left cursor-pointer group">
+          <div className="flex items-baseline">
+            <span className="text-3xl font-[1000] tracking-tighter text-white font-sans italic transition-colors group-hover:text-red-600">CHECK</span>
+            <span className="text-4xl text-red-600 ml-[-2px]" style={{ fontFamily: "'Permanent Marker', cursive" }}>Mate</span>
+          </div>
+          <span className="text-[10px] font-bold tracking-[0.4em] text-white/70 mt-[-4px] font-serif uppercase">NEW YORK</span>
+        </div>
+
+        <div className="flex items-center gap-8">
+          <ul className="hidden md:flex gap-8 text-[10px] font-black tracking-[0.2em] text-white/50 uppercase">
+            <li className="hover:text-white cursor-pointer transition-colors">Shop</li>
+            <li className="hover:text-white cursor-pointer transition-colors">Archive</li>
+            <li className="hover:text-white cursor-pointer transition-colors">Editorial</li>
+          </ul>
+          <div className="relative cursor-pointer hover:text-red-500 transition-colors">
+            <ShoppingBag size={22} />
+            <span className="absolute -top-1 -right-2 bg-red-600 text-[8px] font-bold px-1 rounded-full">0</span>
+          </div>
+        </div>
+      </nav>
+
+      {/* --- HERO BANNER SECTION (PLACEHOLDER FOR YOUR CREATED PICTURES) --- */}
+      <section className="relative h-[100vh] w-full overflow-hidden flex items-center justify-center">
+        {/* Banner Image Wrapper */}
+        <div 
+          className="absolute inset-0 transition-transform duration-300 ease-out"
+          style={{ 
+            opacity: heroOpacity,
+            transform: `scale(${1 + scrollY * 0.0004})`
+          }}
+        >
+          {/* Overlays for depth */}
+          <div className="absolute inset-0 bg-black/30 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent z-10" />
+          
+          {/* BANNER PHOTO PLACEHOLDER: Insert your "Chess-City Apocalypse" image here */}
+          <img 
+            src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=2000" 
+            alt="Checkmate New York Main Campaign Banner"
+            className="w-full h-full object-cover grayscale-[20%]"
+          />
+        </div>
+
+        {/* Cinematic Centered Title */}
+        <div 
+          className="relative z-20 text-center pointer-events-none px-4"
+          style={{ 
+            opacity: heroOpacity, 
+            transform: `scale(${logoScale}) translateY(${scrollY * 0.25}px)` 
+          }}
+        >
+          <div className="flex flex-col items-center">
+             <div className="flex items-baseline mb-3">
+                <span className="text-[12vw] font-[1000] tracking-tighter text-white font-sans italic leading-none drop-shadow-[0_20px_20px_rgba(0,0,0,0.9)]">CHECK</span>
+                <span className="text-[14vw] text-red-600 ml-[-1vw] drop-shadow-[0_20px_20px_rgba(0,0,0,0.9)]" style={{ fontFamily: "'Permanent Marker', cursive" }}>Mate</span>
+             </div>
+             <div className="h-[2px] w-24 bg-red-600 mb-6 drop-shadow-xl"></div>
+             <p className="text-xs md:text-xl tracking-[1em] font-bold text-white uppercase font-serif drop-shadow-lg">
+               NEW YORK CITY
+             </p>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 animate-pulse">
+          <span className="text-[8px] font-black tracking-[0.5em] text-white/40 uppercase">Scroll to Advance</span>
+          <ChevronDown size={24} className="text-white/20" />
+        </div>
+      </section>
+
+      {/* --- BRAND MANIFESTO --- */}
+      <section className="py-40 px-6 max-w-5xl mx-auto text-center border-b border-white/5">
+        <h2 className="text-4xl md:text-7xl font-bold italic tracking-tighter mb-10 leading-none">
+          CHAOS <span className="text-red-600">INTO</span> CONTROL.
+        </h2>
+        <p className="text-white/40 max-w-xl mx-auto uppercase tracking-[0.2em] text-[10px] md:text-xs leading-loose">
+          A high-fashion response to urban decay. Designed in Manhattan. <br/> Built for the tactical dominance of the modern street.
+        </p>
+      </section>
+
+      {/* --- PRODUCT GRID --- */}
+      <section className="px-6 py-32 bg-black">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-baseline mb-20 gap-4">
+            <div>
+              <h3 className="text-[10px] font-black tracking-[0.4em] text-red-600 mb-4 uppercase flex items-center gap-2">
+                <Zap size={12} fill="currentColor" /> Collection 01
+              </h3>
+              <h2 className="text-5xl font-black tracking-tighter uppercase italic">The Aftermath</h2>
+            </div>
+            <p className="text-[10px] text-white/30 font-mono tracking-widest">[ SHIPS WORLDWIDE FROM NYC ]</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-20">
+            {PRODUCTS.map((product) => (
+              <div key={product.id} className="group cursor-pointer">
+                <div className="relative aspect-[4/5] overflow-hidden bg-[#0a0a0a] mb-8 border border-white/5">
+                  <img 
+                    src={product.image} 
+                    alt={product.name}
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100"
+                  />
+                  <div className="absolute inset-0 bg-red-600/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 w-full p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-red-600 text-white text-[10px] font-black tracking-[0.2em] text-center uppercase">
+                    Add to Tactical Loadout
+                  </div>
+                </div>
+                <div className="flex justify-between items-start px-1">
+                  <div>
+                    <p className="text-[9px] text-white/40 font-bold tracking-widest mb-1 uppercase">{product.category}</p>
+                    <h4 className="text-sm font-black tracking-tight group-hover:text-red-500 transition-colors uppercase">{product.name}</h4>
+                  </div>
+                  <p className="font-mono text-sm tracking-tighter">${product.price}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- FOOTER --- */}
+      <footer className="bg-black border-t border-white/10 pt-32 pb-16 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
+            {/* Brand Section */}
+            <div className="md:col-span-2">
+              <div className="flex flex-col leading-none mb-8">
+                <div className="flex items-baseline">
+                  <span className="text-4xl font-[1000] tracking-tighter text-white font-sans italic">CHECK</span>
+                  <span className="text-5xl text-red-600 ml-[-2px]" style={{ fontFamily: "'Permanent Marker', cursive" }}>Mate</span>
+                </div>
+                <span className="text-xs font-bold tracking-[0.6em] text-white/60 mt-[-6px] font-serif uppercase">NEW YORK</span>
+              </div>
+              <p className="text-white/30 text-[11px] max-w-sm mb-10 leading-relaxed tracking-wider uppercase font-medium">
+                Established 2026. A collective focused on aggressive minimalism and architectural silhouettes.
+              </p>
+              
+              {/* SOCIAL BUTTONS: INSTAGRAM & FACEBOOK ADDED */}
+              <div className="flex gap-6 items-center">
+                <a href="#" className="text-white/40 hover:text-white transition-colors flex items-center gap-2 group">
+                  <Instagram size={20} />
+                  <span className="text-[9px] font-bold tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">IG</span>
+                </a>
+                <a href="#" className="text-white/40 hover:text-white transition-colors flex items-center gap-2 group">
+                  <Facebook size={20} />
+                  <span className="text-[9px] font-bold tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">FB</span>
+                </a>
+                <a href="#" className="text-white/40 hover:text-white transition-colors flex items-center gap-2 group">
+                  <Twitter size={20} />
+                  <span className="text-[9px] font-bold tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">X</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Links */}
+            <div className="grid grid-cols-2 gap-8 md:col-span-2">
+              <div>
+                <h4 className="text-[10px] font-black tracking-[0.3em] text-red-600 mb-8 uppercase">Directives</h4>
+                <ul className="space-y-4 text-[10px] font-bold text-white/40 tracking-[0.1em] uppercase">
+                  <li className="hover:text-white cursor-pointer transition-colors">Logistics & Shipping</li>
+                  <li className="hover:text-white cursor-pointer transition-colors">Privacy Protocol</li>
+                  <li className="hover:text-white cursor-pointer transition-colors">Terms of Engagement</li>
+                  <li className="hover:text-white cursor-pointer transition-colors">Contact Intelligence</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-[10px] font-black tracking-[0.3em] text-red-600 mb-8 uppercase">Intelligence</h4>
+                <p className="text-[10px] text-white/30 mb-4 leading-relaxed tracking-wider uppercase">Join the network for drops.</p>
+                <div className="flex border-b border-white/20 pb-2">
+                  <input 
+                    type="email" 
+                    placeholder="ENTER EMAIL" 
+                    className="bg-transparent text-[10px] font-bold w-full focus:outline-none tracking-widest"
+                  />
+                  <button className="text-[10px] font-black tracking-widest hover:text-red-500 transition-colors">SUBMIT</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col md:row justify-between items-center pt-10 border-t border-white/5 text-[9px] text-white/10 font-mono tracking-[0.5em] uppercase">
+            <p>© 2026 CHECKMATE NEW YORK. ALL ASSETS SECURED.</p>
+            <p className="mt-4 md:mt-0 italic">A Division of Chaos Control Inc.</p>
+          </div>
+        </div>
+      </footer>
+
+      {/* GLOBAL STYLES */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        body { background-color: black; margin: 0; padding: 0; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: black; }
+        ::-webkit-scrollbar-thumb { background: #333; }
+        ::-webkit-scrollbar-thumb:hover { background: #dc2626; }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+      `}} />
+
+    </div>
+  );
+}
